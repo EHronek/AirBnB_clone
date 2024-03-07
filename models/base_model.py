@@ -2,6 +2,8 @@
 """Defines all common attributes/methods for other classes"""
 import uuid
 import datetime
+from models import storage
+
 
 class BaseModel:
     """ base class for all the other classes on the project"""
@@ -13,11 +15,12 @@ class BaseModel:
                 if key == "__class__":
                     continue
                 if key in ['created_at', 'updated_at']:
-                    value = datetime.datetime.strptime(value, fmt)
+                    value = datetime.strptime(value, fmt)
                 setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.datetime.now()
+            self.created_at = self.updated_at = datetime.now()
+            storage.new(self)
 
     def __str__(self):
         """ Prints a user freindly string representation of the object"""
@@ -26,7 +29,8 @@ class BaseModel:
     def save(self):
         """ updates the public intance attribute update_at with the
         with the current date time"""
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """ returns a dictionary containing all keys/values of `__dict__`
