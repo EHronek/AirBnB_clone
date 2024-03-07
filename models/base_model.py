@@ -5,10 +5,19 @@ import datetime
 
 class BaseModel:
     """ base class for all the other classes on the project"""
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """ Instantiation of BaseModel class"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
+        if kwargs:
+            for key, value in kwargs.items():
+                fmt = '%Y-%m-%dT%H:%M:%S.%f'
+                if key == "__class__":
+                    continue
+                if key in ['created_at', 'updated_at']:
+                    value = datetime.datetime.strptime(value, fmt)
+                setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.datetime.now()
 
     def __str__(self):
         """ Prints a user freindly string representation of the object"""
@@ -24,8 +33,8 @@ class BaseModel:
         of the instance"""
         obj_dict_copy = self.__dict__.copy()
         obj_dict_copy['__class__'] = type(self).__name__
-        obj_dict_copy['created_at'] = self.updated_at.isoformat()
-        obj_dict_copy['updated_at'] = self.created_at.isoformat()
+        obj_dict_copy['created_at'] = self.created_at.isoformat()
+        obj_dict_copy['updated_at'] = self.updated_at.isoformat()
         return obj_dict_copy
 
     def __str__(self):
