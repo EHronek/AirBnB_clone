@@ -17,7 +17,7 @@ class FileStorage:
     def new(self, obj):
         """ sets in __objects the obj with key <obj class name>.id"""
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = obj
+        self.__objects[key] = obj.to_dict()
 
     def save(self):
         """ serializes __objects to json file (path: __file_path)"""
@@ -31,5 +31,5 @@ class FileStorage:
         try:
             with open(self.__file_path, 'r') as js_file:
                 self.__objects = json.load(js_file)
-        except:
+        except Exception:
             pass

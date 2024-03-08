@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Defines all common attributes/methods for other classes"""
 import uuid
-import datetime
+from datetime import datetime
 from models import storage
 
 
