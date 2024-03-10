@@ -89,10 +89,16 @@ class HBNBCommand(Cmd):
         if len(parsed_args) == 0:
             for value in storage.all().values():
                 obj_list.append(str(value))
+            print('[', end='')
+            print(', '.join(obj_list), end='')
+            print(']')
         elif parsed_args[0] in classes:
             for key in storage.all():
-                if parsed_args[0] in storage.all():
+                if parsed_args[0] in key:
                     obj_list.append(str(storage.all()[key]))
+            print('[', end='')
+            print(', '.join(obj_list), end='')
+            print(']')
         else:
             print('** class doesn\'t exist **')
 
