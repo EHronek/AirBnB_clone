@@ -3,6 +3,9 @@
     of the command interpreter"""
 from cmd import Cmd
 from models.base_model import BaseModel
+import shlex
+
+classes = {'BaseModel': BaseModel}
 
 
 class HBNBCommand(Cmd):
@@ -25,15 +28,17 @@ class HBNBCommand(Cmd):
     def do_create(self, arg):
         """ Creates a new instance of BaseModel, saves it to JSON
             and prints the `id` """
+        parsed_args = shlex.split(arg)
         try:
             if not arg:
                 print('** class name missing **')
             elif arg not in globals():
                 print("** class doesn't exist **")
-            else:
-                obj = BaseModel()
-                obj.save()
+            elif parsed_args[0] in classes:
+                obj = classes[parsed_args[0]]()
                 print(obj.id)
+                obj.save()
+            
         except Exception:
             pass
 
