@@ -105,17 +105,21 @@ class HBNBCommand(Cmd):
     def do_update(self, arg):
         """updates an instance based on the class name and id by
         adding or updating attributes, saves changes into the JSON file"""
-        parsed_args = shlex.split()
-        if len(parsed_args) == 0:
+        p_args = shlex.split(arg)
+        if len(p_args) == 0:
             print('** class name missing **')
-	if parsed_args[0] in classes:
-            if len(parsed_args) > 1:
-                key = parsed_args[0] + '.' + parsed_args[1]
+        if p_args[0] in classes:
+            if len(p_args) > 1:
+                key = p_args[0] + '.' + p_args[1]
+                instance = storage.all()[key]
                 if key in storage.all():
-                    if len(parsed_args) > 2:
-                        if len(parsed_args) >= 3:
-                            setattr(storage.all()[key], parsed_args[2], parsed_args[3])
-                            storage.all()[key].save()
+                    if len(p_args) > 2:
+                        if len(p_args) > 3:
+                            if hasattr(instance, p_args[2]):
+                                setattr(instance, p_args[2], p_args[3])
+                                instance.save()
+                            else:
+                                print('** attrubute name misssing')
                         else:
                             print('** value missing **')
                     else:
