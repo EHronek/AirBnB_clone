@@ -2,7 +2,7 @@
 """ Defines a class storage that serializes instances to a json file
     and desirializes JSON file to instances"""
 import json
-
+import models
 
 class FileStorage:
     """serializes instances to json file and desirializes json file
