@@ -9,8 +9,3 @@ class User(BaseModel):
     password = ''
     first_name = ''
     last_name = ''
-
-    def __init__(self, *arg, **kwargs):
-        """Initialization of the user """
-        super().__init__(*arg, **kwargs)
-
