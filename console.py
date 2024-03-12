@@ -38,7 +38,7 @@ class HBNBCommand(Cmd):
                 obj = classes[parsed_args[0]]()
                 print(obj.id)
                 obj.save()
-            
+
         except Exception:
             pass
 
@@ -129,7 +129,7 @@ class HBNBCommand(Cmd):
                 print('** instance id missing **')
         else:
             print('** class doesn\'t exist **')
-                        
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
