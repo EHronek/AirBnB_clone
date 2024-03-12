@@ -39,4 +39,5 @@ class BaseModel:
 
     def __str__(self):
         """ prints a user friendly string representation of the object"""
-        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
+        class_name = type(self).__name__
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
