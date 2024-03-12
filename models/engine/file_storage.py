@@ -12,24 +12,31 @@ class FileStorage:
 
     def all(self):
         """returns the dictionary __objects"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """ sets in __objects the obj with key <obj class name>.id"""
         key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects[key] = obj.to_dict()
+        self.__objects[key] = obj
 
     def save(self):
         """ serializes __objects to json file (path: __file_path)"""
-        with open(FileStorage.__file_path, 'w') as js_file:
-            json.dump(FileStorage.__objects, js_file)
+        with open(self.__file_path, 'w') as js_file:
+            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, js_file)
 
     def reload(self):
         """ Deserializes the json file to __objects (only if the JSON
         file(__file_path) exists: otherwise, do nothing. If the file
         doesn't exist, no exemption should be raised"""
+        from models.base_model import BaseModel
+        my_dict = {"BaseModel": BaseModel,}
         try:
             with open(self.__file_path, 'r') as js_file:
-                FileStorage.__objects = json.load(js_file)
+                data = json.load(js_file)
+                self.__objects = {}
+                for key in data:
+                    clas_name = key.split('.')[0]
+                    if clas_name in my_dict:
+                        self.__objects[key] = my_dict[clas_name](**data[key])
         except Exception:
             pass
