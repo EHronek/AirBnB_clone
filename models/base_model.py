@@ -22,10 +22,6 @@ class BaseModel:
             self.created_at = self.updated_at = datetime.now()
             storage.new(self)
 
-    def __str__(self):
-        """ Prints a user freindly string representation of the object"""
-        return "[BaseModel] ({self.id}) {self.__dict__}"
-
     def save(self):
         """ updates the public intance attribute update_at with the
         with the current date time"""
@@ -43,4 +39,4 @@ class BaseModel:
 
     def __str__(self):
         """ prints a user friendly string representation of the object"""
-        return "[BaseModel] ({}) {}".format(self.id, self.__dict__)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
