@@ -4,6 +4,7 @@
 import json
 import models
 
+
 class FileStorage:
     """serializes instances to json file and desirializes json file
     to instances"""
@@ -21,15 +22,15 @@ class FileStorage:
 
     def save(self):
         """ serializes __objects to json file (path: __file_path)"""
-        with open(self.__file_path, 'w') as js_file:
-            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, js_file)
+        with open(self.__file_path, 'w') as f:
+            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
 
     def reload(self):
         """ Deserializes the json file to __objects (only if the JSON
         file(__file_path) exists: otherwise, do nothing. If the file
         doesn't exist, no exemption should be raised"""
         from models.base_model import BaseModel
-        my_dict = {"BaseModel": BaseModel,}
+        my_dict = {"BaseModel": BaseModel, }
         try:
             with open(self.__file_path, 'r') as js_file:
                 data = json.load(js_file)
