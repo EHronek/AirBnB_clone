@@ -1,0 +1,19 @@
+footer {
+    background-color: white;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    position: fixed;
+    border-top: 1px solid #CCCCCC;
+    align-items: center;
+    justify-content: center;
+}
+p {
+    align-items: center;
+    text-align: center;
+    margin:0;
+    color: #484848;
+    font-size: 14px;
+    font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: flex;
+}
