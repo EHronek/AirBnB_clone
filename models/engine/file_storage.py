@@ -31,6 +31,13 @@ class FileStorage:
         doesn't exist, no exemption should be raised"""
         from models.base_model import BaseModel
         from models.user import User
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.amenity import Amenity
+        from models.review import Review
+        from models.city import City
+
         try:
             with open(self.__file_path, 'r') as f:
                 for data in json.load(f).values():

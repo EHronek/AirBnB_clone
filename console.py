@@ -3,10 +3,23 @@
     of the command interpreter"""
 from cmd import Cmd
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.amenity import Amenity
+from models.review import Review
+from models.city import City
+
 import shlex
 from models import storage
 
-classes = {'BaseModel': BaseModel}
+classes = {'BaseModel': BaseModel,
+	   'User': User,
+	   'Place': Place,
+	   'State': State,
+	   'Amenity': Amenity,
+	   'Review': Review,
+           'City': City}
 
 
 class HBNBCommand(Cmd):
