@@ -30,14 +30,11 @@ class FileStorage:
         file(__file_path) exists: otherwise, do nothing. If the file
         doesn't exist, no exemption should be raised"""
         from models.base_model import BaseModel
-        my_dict = {"BaseModel": BaseModel, }
         try:
-            with open(self.__file_path, 'r') as js_file:
-                data = json.load(js_file)
-                self.__objects = {}
-                for key in data:
-                    clas_name = key.split('.')[0]
-                    if clas_name in my_dict:
-                        self.__objects[key] = my_dict[clas_name](**data[key])
-        except Exception:
+            with open(self.__file_path, 'r') as f:
+                for data in json.load(f).values():
+                    class_name = data["__class__"]
+                    del data["__class__"]
+                    self.new(eval(class_name)(**data))
+        except FileNotFoundError:
             pass
