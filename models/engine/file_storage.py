@@ -30,6 +30,7 @@ class FileStorage:
         file(__file_path) exists: otherwise, do nothing. If the file
         doesn't exist, no exemption should be raised"""
         from models.base_model import BaseModel
+        from models.user import User
         try:
             with open(self.__file_path, 'r') as f:
                 for data in json.load(f).values():
