@@ -149,7 +149,7 @@ class HBNBCommand(Cmd):
             setattr(instance, attribute_name, attribute_value)
         instance.save()
 
-    def default(self, line):
+    '''def default(self, line):
         """Handle unrecognized commands"""
         args = line.split('.')
         if len(args) == 2 and args[1] == 'all()':
@@ -159,8 +159,32 @@ class HBNBCommand(Cmd):
             else:
                 print("** class doesn't exist **")
         else:
-            print("*** Unknown syntax: {}".format(line))
+            print("*** Unknown syntax: {}".format(line))'''
 
+    def default(self, line):
+        """Handle unrecognized commands"""
+        command_parts = line.split('.')
+        if len(command_parts) != 2:
+            print(f"*** Unknown syntax: {line}")
+            return
+
+        class_name, command = command_parts
+        if class_name not in classes:
+            print(f"*** Unknown syntax: {line}")
+            return
+
+        if command == 'all()':
+            self.do_all(class_name)
+        elif command == 'count()':
+            self.do_count(class_name)
+        else:
+            print(f"*** Unknown syntax: {line}")
+
+
+    def do_count(self, class_name):
+        """Retrieve the number of instances of a class"""
+        count = sum(1 for key in storage.all() if key.startswith(class_name))
+        print(count)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
