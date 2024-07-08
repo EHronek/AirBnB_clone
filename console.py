@@ -23,6 +23,7 @@ classes = {
     'City': City
 }
 
+
 class HBNBCommand(Cmd):
     """ entry point of the command interpreter"""
     prompt = '(hbnb) '
@@ -109,7 +110,8 @@ class HBNBCommand(Cmd):
         if class_name not in classes:
             print("** class doesn't exist **")
             return
-        instances = [str(obj) for key, obj in storage.all().items() if key.startswith(class_name)]
+        instances = [str(obj) for key, obj in storage.all().items()
+                     if key.startswith(class_name)]
         print(instances)
 
     def do_update(self, arg):
@@ -158,6 +160,7 @@ class HBNBCommand(Cmd):
                 print("** class doesn't exist **")
         else:
             print("*** Unknown syntax: {}".format(line))
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
