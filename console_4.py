@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" The Airbnb Console """
+""" The console """
 
 from cmd import Cmd
 import shlex
@@ -148,9 +148,6 @@ class HBNBCommand(Cmd):
         elif command.startswith('destroy(') and command.endswith(')'):
             instance_id = command[len('destroy('):-1].strip('"')
             self.do_destroy(f"{class_name} {instance_id}")
-        elif command.startswith('show(') and command.endswith(')'):
-            instance_id = command[len('show('):-1].strip('"')
-            self.do_show(f"{class_name} {instance_id}")
         else:
             print(f"*** Unknown syntax: {line}")
 
@@ -158,6 +155,7 @@ class HBNBCommand(Cmd):
         """Retrieve the number of instances of a class"""
         count = sum(1 for key in storage.all() if key.startswith(class_name))
         print(count)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
