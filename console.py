@@ -25,11 +25,11 @@ classes = {
 
 
 class HBNBCommand(Cmd):
-    """ entry point of the command interpreter"""
+    """ Entry point of the command interpreter """
     prompt = '(hbnb) '
 
     def do_EOF(self, line):
-        """ EOF to Exit the program"""
+        """ EOF to exit the program """
         return True
 
     def do_quit(self, arg):
@@ -37,71 +37,66 @@ class HBNBCommand(Cmd):
         return True
 
     def emptyline(self):
-        """ Do nothing on empty input line"""
+        """ Do nothing on empty input line """
         pass
 
     def do_create(self, arg):
         """ Creates a new instance of BaseModel, saves it to JSON
             and prints the `id` """
         parsed_args = shlex.split(arg)
-        if len(parsed_args) == 0:
-            print('** class name missing **')
-            return
-        class_name = parsed_args[0]
-        if class_name not in classes:
-            print("** class doesn't exist **")
-            return
-        obj = classes[class_name]()
-        obj.save()
-        print(obj.id)
+        try:
+            if not arg:
+                print('** class name missing **')
+            elif arg not in globals():
+                print("** class doesn't exist **")
+            elif parsed_args[0] in classes:
+                obj = classes[parsed_args[0]]()
+                print(obj.id)
+                obj.save()
+        except Exception:
+            pass
 
     def do_show(self, arg):
         """ Prints the string representation of an instance based
-        on the class name and id """
+        based on the class name and id """
         parsed_args = shlex.split(arg)
         if len(parsed_args) == 0:
             print('** class name missing **')
-            return
-        class_name = parsed_args[0]
-        if class_name not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(parsed_args) < 2:
-            print('** instance id missing **')
-            return
-        instance_id = parsed_args[1]
-        key = f"{class_name}.{instance_id}"
-        instance = storage.all().get(key)
-        if instance:
-            print(instance)
+            return False
+        if parsed_args[0] in classes:
+            if len(parsed_args) > 1:
+                key = parsed_args[0] + '.' + parsed_args[1]
+                if key in storage.all():
+                    print(storage.all()[key])
+                else:
+                    print('** no instance found **')
+            else:
+                print('** instance id missing **')
         else:
-            print('** no instance found **')
+            print("** class doesn't exist **")
 
     def do_destroy(self, arg):
         """ Deletes an instance based on the class name and id
-            save the changes in the json file"""
+            save the changes in the json file """
         parsed_args = shlex.split(arg)
         if len(parsed_args) == 0:
             print('** class name missing **')
-            return
-        class_name = parsed_args[0]
-        if class_name not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(parsed_args) < 2:
-            print('** instance id missing **')
-            return
-        instance_id = parsed_args[1]
-        key = f"{class_name}.{instance_id}"
-        if key in storage.all():
-            del storage.all()[key]
-            storage.save()
+        elif parsed_args[0] in classes:
+            if len(parsed_args) > 1:
+                key = parsed_args[0] + '.' + parsed_args[1]
+                if key in storage.all():
+                    storage.all().pop(key)
+                    storage.save()
+                else:
+                    print("** no instance found **")
+            else:
+                print("** instance id missing **")
         else:
-            print("** no instance found **")
+            print("** class doesn't exist **")
 
     def do_all(self, arg):
         """ Prints all string representation of all instances based
-            on class name"""
+            on class name """
         parsed_args = shlex.split(arg)
         if len(parsed_args) == 0:
             print([str(obj) for obj in storage.all().values()])
@@ -115,51 +110,33 @@ class HBNBCommand(Cmd):
         print(instances)
 
     def do_update(self, arg):
-        """updates an instance based on the class name and id by
-        adding or updating attributes, saves changes into the JSON file"""
-        parsed_args = shlex.split(arg)
-        if len(parsed_args) == 0:
+        """ Updates an instance based on the class name and id by
+        adding or updating attributes, saves changes into the JSON file """
+        p_args = shlex.split(arg)
+        if len(p_args) == 0:
             print('** class name missing **')
-            return
-        class_name = parsed_args[0]
-        if class_name not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(parsed_args) < 2:
-            print('** instance id missing **')
-            return
-        instance_id = parsed_args[1]
-        key = f"{class_name}.{instance_id}"
-        instance = storage.all().get(key)
-        if not instance:
-            print('** no instance found **')
-            return
-        if len(parsed_args) < 3:
-            print('** attribute name missing **')
-            return
-        if len(parsed_args) < 4:
-            print('** value missing **')
-            return
-        attribute_name = parsed_args[2]
-        attribute_value = parsed_args[3]
-        if hasattr(instance, attribute_name):
-            attr_type = type(getattr(instance, attribute_name))
-            setattr(instance, attribute_name, attr_type(attribute_value))
-        else:
-            setattr(instance, attribute_name, attribute_value)
-        instance.save()
-
-    '''def default(self, line):
-        """Handle unrecognized commands"""
-        args = line.split('.')
-        if len(args) == 2 and args[1] == 'all()':
-            class_name = args[0]
-            if class_name in classes:
-                self.do_all(class_name)
+        if p_args[0] in classes:
+            if len(p_args) > 1:
+                key = p_args[0] + '.' + p_args[1]
+                instance = storage.all()[key]
+                if key in storage.all():
+                    if len(p_args) > 2:
+                        if len(p_args) > 3:
+                            if hasattr(instance, p_args[2]):
+                                setattr(instance, p_args[2], p_args[3])
+                                instance.save()
+                            else:
+                                print('** attribute name missing **')
+                        else:
+                            print('** value missing **')
+                    else:
+                        print('** attribute name missing **')
+                else:
+                    print('** no instance found **')
             else:
-                print("** class doesn't exist **")
+                print('** instance id missing **')
         else:
-            print("*** Unknown syntax: {}".format(line))'''
+            print('** class doesn\'t exist **')
 
     def default(self, line):
         """Handle unrecognized commands"""
@@ -177,14 +154,18 @@ class HBNBCommand(Cmd):
             self.do_all(class_name)
         elif command == 'count()':
             self.do_count(class_name)
+        elif command.startswith('destroy(') and command.endswith(')'):
+            instance_id = command[len('destroy('):-1].strip('"')
+            self.do_destroy(f"{class_name} {instance_id}")
         else:
             print(f"*** Unknown syntax: {line}")
-
 
     def do_count(self, class_name):
         """Retrieve the number of instances of a class"""
         count = sum(1 for key in storage.all() if key.startswith(class_name))
         print(count)
 
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
+
