@@ -3,9 +3,26 @@ body {
     padding: 0;
     color: #484848;
     font-size: 14px;
-    font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: relative;
+    font-family: Circular, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
-.container {
+body .container {
     max-width: 1000px;
-    margin: 30px auto 30px auto;
+    margin: 30px auto;
+    
+}
+
+.btn {
+    position: absolute;
+    color: #FFFFFF;
+    background: #FF5A5F;
+    height: 48px;
+    width: 20%;
+    border-radius: 4px;
+    font-size: 18px;
+    right: 30px;
+    top: 15px;
+}
+button:hover {
+    opacity: 0.9;
 }
